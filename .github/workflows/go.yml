@@ -1,0 +1,75 @@
+name: Go
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - '.github/workflows/go.yml'
+  pull_request:
+    paths:
+      - '**.go'
+      - 'go.mod'
+      - '.github/workflows/go.yml'
+env:
+  GOPROXY: "https://proxy.golang.org"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19.x
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.49.0
+          args: --timeout=10m
+      - name: Check Go module tidiness
+        shell: bash
+        run: |
+          go mod tidy
+          STATUS=$(git status --porcelain)
+          if [ ! -z "$STATUS" ]; then
+            echo "Unstaged files:"
+            echo $STATUS
+            echo "Run 'go mod tidy' commit them"
+            exit 1
+          fi
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19.x
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run tests
+        run: go test -v -race ./...
+        env:
+          PGPORT: 5432
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGSSLMODE: disable
+
