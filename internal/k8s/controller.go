@@ -114,7 +114,7 @@ func (c *Controller) LoadImage(ctx context.Context, imageName string) (io.ReadCl
 	}
 
 	destPath := os.TempDir()
-	destFilePath := filepath.Join(destPath, imageName+".tar")
+	destFilePath := filepath.Join(destPath, cri.ImageTarName(imageName))
 	if _, err := os.Stat(destFilePath); err != nil {
 		if os.IsNotExist(err) {
 			// Export image to tar file.

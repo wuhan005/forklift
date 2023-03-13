@@ -103,8 +103,8 @@ func (d *Docker) ExportImage(ctx context.Context, image, destPath string) error 
 	return nil
 }
 
-func (d *Docker) LoadImage(ctx context.Context, image, sourcePath string) error {
-	image = strings.TrimSpace(image)
+func (d *Docker) LoadImage(ctx context.Context, imageName, sourcePath string) error {
+	imageName = strings.TrimSpace(imageName)
 
 	// Move image file into node.
 	containerID, err := d.getContainerID()
@@ -112,16 +112,17 @@ func (d *Docker) LoadImage(ctx context.Context, image, sourcePath string) error 
 		return errors.Wrap(err, "get container id")
 	}
 	sourceContainerPath := containerID + ":" + sourcePath
+	tempDestPath := os.TempDir()
 	execCommand := []string{
 		"sh", "-c",
-		"nsenter -t 1 -m -u -n -i docker cp " + sourceContainerPath + " /tmp",
+		"nsenter -t 1 -m -u -n -i docker cp " + sourceContainerPath + " " + tempDestPath,
 	}
 	if err := exec.CommandContext(ctx, execCommand[0], execCommand[1:]...).Run(); err != nil {
 		return errors.Wrap(err, "docker cp")
 	}
 
 	// Load image from node.
-	tempFilePath := filepath.Join(os.TempDir(), image+".tar")
+	tempFilePath := filepath.Join(tempDestPath, ImageTarName(imageName))
 	execCommand = []string{
 		"sh", "-c",
 		"nsenter -t 1 -m -u -n -i docker load -i " + tempFilePath,

@@ -93,14 +93,14 @@ func (c *Daemon) GetControllerImages(_ context.Context) ([]string, error) {
 	return images, nil
 }
 
-func (c *Daemon) PullImage(ctx context.Context, image string) error {
-	resp, err := http.Get(c.controllerServiceAddr + "/load?image=" + image)
+func (c *Daemon) PullImage(ctx context.Context, imageName string) error {
+	resp, err := http.Get(c.controllerServiceAddr + "/load?image=" + imageName)
 	if err != nil {
 		return errors.Wrap(err, "get controller images")
 	}
 	defer func() { _ = resp.Body.Close() }()
 
-	imageFilePath := filepath.Join(os.TempDir(), image+".tar")
+	imageFilePath := filepath.Join(os.TempDir(), cri.ImageTarName(imageName))
 	f, err := os.Create(imageFilePath)
 	if err != nil {
 		return errors.Wrap(err, "open image file")
@@ -111,7 +111,7 @@ func (c *Daemon) PullImage(ctx context.Context, image string) error {
 		return errors.Wrap(err, "io copy")
 	}
 
-	if err := c.cri.LoadImage(ctx, image, imageFilePath); err != nil {
+	if err := c.cri.LoadImage(ctx, imageName, imageFilePath); err != nil {
 		return errors.Wrap(err, "load image")
 	}
 	return nil

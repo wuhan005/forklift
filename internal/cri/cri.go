@@ -6,6 +6,7 @@ package cri
 
 import (
 	"context"
+	"strings"
 )
 
 type Image struct {
@@ -18,4 +19,8 @@ type CRI interface {
 	PullImage(ctx context.Context, image string) error
 	LoadImage(ctx context.Context, image, sourcePath string) error
 	ExportImage(ctx context.Context, image, destPath string) error
+}
+
+func ImageTarName(imageName string) string {
+	return strings.ReplaceAll(imageName, "/", "-") + ".tar"
 }
