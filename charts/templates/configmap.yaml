@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: forklift-configmap
+  namespace: {{ .Values.namespace }}
+data:
+  forklift.yaml: |
+    active-namespaces:
+      {{- range $namespace := .Values.controller.activeNamespace }}
+      - {{ $namespace }}
+      {{- end }}

@@ -1,0 +1,16 @@
+replicaCount: 1
+
+namespace: default
+
+image:
+  controller: wuhan005/forklift:controller
+  daemon: wuhan005/forklift:daemon
+imagePullPolicy: IfNotPresent
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80
+
+controller:
+  activeNamespace:
+    - default

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: forklift-daemon
+  labels:
+    app: forklift-daemon
+spec:
+    selector:
+      matchLabels:
+        app: forklift-daemon
+    template:
+        metadata:
+          labels:
+              app: forklift-daemon
+        spec:
+          containers:
+            - name: forklift-daemon
+              image: {{ .Values.image.daemon }}
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+              securityContext:
+                  privileged: true
+          serviceAccountName: forklift-service-account
+          automountServiceAccountToken: true
+          hostPID: true
