@@ -86,6 +86,10 @@ func (c *Daemon) GetControllerImages(_ context.Context) ([]string, error) {
 	}
 	defer func() { _ = resp.Body.Close() }()
 
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.Errorf("unexpected status: %d %s", resp.StatusCode, resp.Status)
+	}
+
 	var images []string
 	if err := json.NewDecoder(resp.Body).Decode(&images); err != nil {
 		return nil, errors.Wrap(err, "decode response")
@@ -99,6 +103,10 @@ func (c *Daemon) PullImage(ctx context.Context, imageName string) error {
 		return errors.Wrap(err, "get controller images")
 	}
 	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusOK {
+		return errors.Errorf("unexpected status: %d %s", resp.StatusCode, resp.Status)
+	}
 
 	imageFilePath := filepath.Join(os.TempDir(), cri.ImageTarName(imageName))
 	f, err := os.Create(imageFilePath)
