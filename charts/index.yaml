@@ -3,7 +3,17 @@ entries:
   forklift:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-03-13T18:23:04.811544+08:00"
+    created: "2023-03-13T18:33:05.638498+08:00"
+    description: Lightweight image pre-download component for Kubernetes.
+    digest: dadfe442acdde23d5e8836fc388f3790bec0fdb43db5276e088aca49bb9097fe
+    name: forklift
+    type: application
+    urls:
+    - charts/forklift-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-03-13T18:33:05.63743+08:00"
     description: Lightweight image pre-download component for Kubernetes.
     digest: 80909b28a39a9f0afd35743ec9909ce63edc63c3d00bdc07655c0d3009014b6a
     name: forklift
@@ -13,7 +23,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-03-13T18:23:04.811151+08:00"
+    created: "2023-03-13T18:33:05.634742+08:00"
     description: Lightweight image pre-download component for Kubernetes.
     digest: 320e55ddcb74e6565668a42787f7e672d962c0a546a23fc9f78e5ee86a93c31a
     name: forklift
@@ -21,4 +31,4 @@ entries:
     urls:
     - charts/forklift-0.1.0.tgz
     version: 0.1.0
-generated: "2023-03-13T18:23:04.810739+08:00"
+generated: "2023-03-13T18:33:05.633584+08:00"
