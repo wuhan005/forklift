@@ -1,5 +1,7 @@
 replicaCount: 1
 
+namespace: default
+
 image:
   controller: wuhan005/forklift:controller
   daemon: wuhan005/forklift:daemon
