@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: forklift-daemonset
+  labels:
+    app: forklift-daemonset
+spec:
+    selector:
+      matchLabels:
+        app: forklift-daemonset
+    template:
+        metadata:
+          labels:
+              app: forklift-daemonset
+        spec:
+          containers:
+            - name: forklift-daemonset
+              image: wuhan005/forklift:daemonset
+              imagePullPolicy: Always
+              securityContext:
+                  privileged: true
+          serviceAccountName: forklift-service-account
+          automountServiceAccountToken: true
+          hostPID: true
