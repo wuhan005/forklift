@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: forklift-daemon
+  name: forklift-daemonset
   labels:
-    app: forklift-daemon
+    app: forklift-daemonset
 spec:
     selector:
       matchLabels:
-        app: forklift-daemon
+        app: forklift-daemonset
     template:
         metadata:
           labels:
-              app: forklift-daemon
+              app: forklift-daemonset
         spec:
           containers:
-            - name: forklift-daemon
+            - name: forklift-daemonset
               image: {{ .Values.image.daemon }}
               imagePullPolicy: {{ .Values.imagePullPolicy }}
               securityContext:
