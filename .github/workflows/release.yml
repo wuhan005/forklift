@@ -15,10 +15,10 @@ jobs:
           go-version: 1.19
       - name: Build
         run: |
-          go build -ldflags '-s -w' -v -o cmd/controller ./cmd/controller
+          CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -v -o cmd/controller ./cmd/controller
           docker build ./cmd/controller -t wuhan005/forklift:controller
           
-          go build -ldflags '-s -w' -v -o cmd/daemon ./cmd/daemon
+          CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -v -o cmd/daemon ./cmd/daemon
           docker build ./cmd/daemon -t wuhan005/forklift:daemon
       - name: Login to DockerHub
         uses: docker/login-action@v1
