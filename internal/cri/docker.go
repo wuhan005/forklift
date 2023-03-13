@@ -74,14 +74,14 @@ func (d *Docker) PullImage(ctx context.Context, image string) error {
 	return exec.CommandContext(ctx, execCommand[0], execCommand[1:]...).Run()
 }
 
-func (d *Docker) ExportImage(ctx context.Context, image, destPath string) error {
-	image = strings.TrimSpace(image)
+func (d *Docker) ExportImage(ctx context.Context, imageName, destPath string) error {
+	imageName = strings.TrimSpace(imageName)
 
 	// Export image to node.
-	tempFilePath := "/tmp/" + image + ".tar"
+	tempFilePath := filepath.Join(os.TempDir(), ImageTarName(imageName))
 	execCommand := []string{
 		"sh", "-c",
-		"nsenter -t 1 -m -u -n -i docker save -o " + tempFilePath + " " + image,
+		"nsenter -t 1 -m -u -n -i docker save -o " + tempFilePath + " " + imageName,
 	}
 	if err := exec.CommandContext(ctx, execCommand[0], execCommand[1:]...).Run(); err != nil {
 		return errors.Wrap(err, "docker save")

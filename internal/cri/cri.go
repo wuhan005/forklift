@@ -6,6 +6,7 @@ package cri
 
 import (
 	"context"
+	"path/filepath"
 	"strings"
 )
 
@@ -22,5 +23,5 @@ type CRI interface {
 }
 
 func ImageTarName(imageName string) string {
-	return strings.ReplaceAll(imageName, "/", "-") + ".tar"
+	return strings.ReplaceAll(imageName, string(filepath.Separator), "-") + ".tar"
 }
