@@ -1,3 +1,14 @@
 apiVersion: v1
-entries: {}
-generated: "2023-03-13T16:23:34.419764+08:00"
+entries:
+  forklift:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-03-13T16:42:12.242012+08:00"
+    description: Lightweight image pre-download component for Kubernetes.
+    digest: 320e55ddcb74e6565668a42787f7e672d962c0a546a23fc9f78e5ee86a93c31a
+    name: forklift
+    type: application
+    urls:
+    - charts/forklift-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-03-13T16:42:12.241138+08:00"
