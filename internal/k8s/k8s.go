@@ -23,7 +23,7 @@ func GetContainerRuntime(ctx context.Context, k8sClient *kubernetes.Clientset, c
 	var hostContainerID string
 	for i := len(currentPod.Status.ContainerStatuses) - 1; i >= 0; i-- {
 		containerStatus := currentPod.Status.ContainerStatuses[i]
-		if containerStatus.Name == containerName {
+		if containerStatus.Name == containerName && containerStatus.ContainerID != "" {
 			hostContainerID = containerStatus.ContainerID
 			break
 		}
